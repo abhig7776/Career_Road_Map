@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - CareerRoadmap AI{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+    <div class="row">
+        <!-- Left Column - Profile -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5><i class="fas fa-user-circle"></i> Your Profile</h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="display-1 text-primary">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h4>{{ current_user.username }}</h4>
+                        <p class="text-muted small">Member since {{ current_user.created_at.strftime('%B %Y') }}</p>
+                    </div>
+                    <p><strong><i class="fas fa-code"></i> Skills:</strong> {{ current_user.profile.skills if current_user.profile else 'Not added' }}</p>
+                    <p><strong><i class="fas fa-graduation-cap"></i> Education:</strong> {{ current_user.profile.education if current_user.profile else 'Not added' }}</p>
+                    <p><strong><i class="fas fa-heart"></i> Interests:</strong> {{ current_user.profile.interests if current_user.profile else 'Not added' }}</p>
+                    <p><strong><i class="fas fa-bullseye"></i> Goal:</strong> {{ current_user.profile.career_goal if current_user.profile else 'Not added' }}</p>
+                    <p><strong><i class="fas fa-certificate"></i> Certifications:</strong> {{ current_user.profile.certifications if current_user.profile else 'Not added' }}</p>
+                    <a href="{{ url_for('goals') }}" class="btn btn-outline-primary w-100 mt-2">
+                        <i class="fas fa-bullseye"></i> View Goals
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Badges -->
+            <div class="card mt-3">
+                <div class="card-header bg-warning">
+                    <h5><i class="fas fa-award"></i> Your Badges</h5>
+                </div>
+                <div class="card-body">
+                    {% if user_badges %}
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for ub in user_badges %}
+                                <span class="badge bg-primary p-2" title="{{ ub.badge.description }}">
+                                    {{ ub.badge.icon }} {{ ub.badge.name }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No badges yet. Keep learning!</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-lg-8">
+            <!-- Stats -->
+            <div class="row">
+                <div class="col-4">
+                    <div class="card text-center p-2">
+                        <h3 class="text-primary">{{ learning_count }}</h3>
+                        <small class="text-muted">Courses</small>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card text-center p-2">
+                        <h3 class="text-success">{{ completed_count }}</h3>
+                        <small class="text-muted">Completed</small>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card text-center p-2">
+                        <h3 class="text-warning">{{ goals|length }}</h3>
+                        <small class="text-muted">Goals</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generate Roadmap -->
+            <div class="card mt-3">
+                <div class="card-header bg-warning">
+                    <h5><i class="fas fa-robot"></i> Generate Your Roadmap</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('generate_roadmap') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <div class="mb-2">
+                            <input type="text" name="skills" class="form-control" 
+                                   placeholder="Skills (comma separated)" 
+                                   value="{{ current_user.profile.skills if current_user.profile else '' }}">
+                        </div>
+                        <div class="mb-2">
+                            <input type="text" name="education" class="form-control" 
+                                   placeholder="Education"
+                                   value="{{ current_user.profile.education if current_user.profile else '' }}">
+                        </div>
+                        <div class="mb-2">
+                            <input type="text" name="interests" class="form-control" 
+                                   placeholder="Interests"
+                                   value="{{ current_user.profile.interests if current_user.profile else '' }}">
+                        </div>
+                        <div class="mb-2">
+                            <input type="text" name="career_goal" class="form-control" 
+                                   placeholder="Career Goal"
+                                   value="{{ current_user.profile.career_goal if current_user.profile else '' }}">
+                        </div>
+                        <div class="mb-2">
+                            <input type="text" name="certifications" class="form-control" 
+                                   placeholder="Certifications"
+                                   value="{{ current_user.profile.certifications if current_user.profile else '' }}">
+                        </div>
+                        <button type="submit" class="btn btn-warning w-100">
+                            <i class="fas fa-magic"></i> Generate AI Roadmap
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="card mt-3">
+                <div class="card-header bg-secondary text-white">
+                    <h5><i class="fas fa-bell"></i> Notifications</h5>
+                </div>
+                <div class="card-body">
+                    {% if notifications %}
+                        {% for n in notifications %}
+                            <div class="alert alert-info py-1 fade-in">
+                                {{ n.message }}
+                                <small class="text-muted float-end">{{ n.created_at.strftime('%H:%M') }}</small>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No new notifications</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="card mt-3">
+                <div class="card-header bg-primary text-white">
+                    <h5><i class="fas fa-bolt"></i> Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="{{ url_for('resources') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-book-open"></i> Resources
+                        </a>
+                        <a href="{{ url_for('youtube_resources') }}" class="btn btn-outline-danger">
+                            <i class="fab fa-youtube"></i> YouTube
+                        </a>
+                        <a href="{{ url_for('recommendations') }}" class="btn btn-outline-success">
+                            <i class="fas fa-robot"></i> Recommendations
+                        </a>
+                        <a href="{{ url_for('chatbot') }}" class="btn btn-outline-warning">
+                            <i class="fas fa-comment-dots"></i> AI Chat
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

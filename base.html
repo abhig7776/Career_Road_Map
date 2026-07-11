@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{% block title %}CareerRoadmap AI{% endblock %}</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f2f5;
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+        
+        /* Dark Mode */
+        body.dark-mode {
+            background: #0a0a1a !important;
+            color: #ffffff !important;
+        }
+        
+        body.dark-mode .navbar {
+            background: #0f0f2a !important;
+        }
+        
+        body.dark-mode .card {
+            background: #16213e !important;
+            color: #ffffff !important;
+            border: 1px solid #2a3a5e !important;
+        }
+        
+        body.dark-mode .card-header {
+            background: #0f3460 !important;
+            color: #ffffff !important;
+        }
+        
+        body.dark-mode .card-body {
+            background: #16213e !important;
+            color: #ffffff !important;
+        }
+        
+        body.dark-mode .form-control {
+            background: #0f3460 !important;
+            color: #ffffff !important;
+            border-color: #2a4a7f !important;
+        }
+        
+        body.dark-mode .form-control::placeholder {
+            color: #8899bb !important;
+        }
+        
+        body.dark-mode .list-group-item {
+            background: #16213e !important;
+            color: #ffffff !important;
+            border-color: #2a3a5e !important;
+        }
+        
+        body.dark-mode .alert-info {
+            background: #0f3460 !important;
+            color: #ffffff !important;
+        }
+        
+        body.dark-mode .alert-success {
+            background: #1a4a3a !important;
+            color: #ffffff !important;
+        }
+        
+        body.dark-mode .text-muted {
+            color: #99aabb !important;
+        }
+        
+        body.dark-mode .stat-card {
+            background: #0f3460 !important;
+            color: #ffffff !important;
+        }
+        
+        body.dark-mode .bg-light {
+            background: #16213e !important;
+        }
+        
+        body.dark-mode footer {
+            background: #0a0a1a !important;
+        }
+        
+        body.dark-mode .table {
+            color: #ffffff !important;
+        }
+        
+        body.dark-mode .table-striped tbody tr:nth-of-type(odd) {
+            background: #16213e !important;
+        }
+        
+        body.dark-mode .table-striped tbody tr:nth-of-type(even) {
+            background: #1a2a4a !important;
+        }
+        
+        /* Navbar */
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .navbar-brand i {
+            color: #667eea;
+        }
+        
+        /* Cards */
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+        }
+        
+        /* Buttons */
+        .btn {
+            border-radius: 25px;
+            padding: 10px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border: none;
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+            border: none;
+            color: #333;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            border: none;
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            margin-top: auto;
+        }
+        
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Stat Cards */
+        .stat-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .stat-card .icon {
+            font-size: 2rem;
+        }
+        
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .stat-card .label {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        /* Resource Cards */
+        .resource-card {
+            transition: all 0.3s ease;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        /* YouTube Embed */
+        .youtube-embed {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        
+        .youtube-embed iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Chatbot */
+        .chat-message {
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            max-width: 80%;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .chat-message.user {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-left: auto;
+            border-radius: 15px 15px 0 15px;
+        }
+        
+        .chat-message.bot {
+            background: #f0f2f5;
+            color: #333;
+            margin-right: auto;
+            border-radius: 15px 15px 15px 0;
+        }
+        
+        body.dark-mode .chat-message.bot {
+            background: #1a2a4a;
+            color: #ffffff;
+        }
+        
+        .typing-indicator {
+            display: none;
+            padding: 10px;
+            color: #999;
+        }
+        
+        .typing-indicator span {
+            display: inline-block;
+            animation: dotPulse 1.4s infinite;
+        }
+        
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes dotPulse {
+            0%, 60%, 100% { opacity: 0.3; transform: scale(0.8); }
+            30% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .btn { width: 100%; margin: 5px 0; }
+            .stat-card { margin: 5px 0; }
+        }
+    </style>
+    
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <!-- ======== NAVIGATION ======== -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('home') }}">
+                <i class="fas fa-route"></i> CareerRoadmap AI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('dashboard') }}">
+                                <i class="fas fa-chart-pie"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('goals') }}">
+                                <i class="fas fa-bullseye"></i> Goals
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('resources') }}">
+                                <i class="fas fa-book-open"></i> Resources
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('youtube_resources') }}">
+                                <i class="fab fa-youtube"></i> YouTube
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('roadmap_view') }}">
+                                <i class="fas fa-map"></i> Roadmap
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('recommendations') }}">
+                                <i class="fas fa-robot"></i> Recommendations
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('chatbot') }}">
+                                <i class="fas fa-comment-dots"></i> AI Chat
+                            </a>
+                        </li>
+                        {% if current_user.is_admin %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('admin') }}">
+                                <i class="fas fa-user-shield"></i> Admin
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link text-danger" href="{{ url_for('logout') }}">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('login') }}">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-primary text-white px-3" href="{{ url_for('register') }}">
+                                <i class="fas fa-user-plus"></i> Register
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ======== FLASH MESSAGES ======== -->
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show fade-in" role="alert">
+                        <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-circle' if category == 'danger' else 'info-circle' }}"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- ======== MAIN CONTENT ======== -->
+    <main class="container py-3">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ======== FOOTER ======== -->
+    <footer class="text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5><i class="fas fa-route"></i> CareerRoadmap AI</h5>
+                    <p class="text-muted small">Your AI-powered career guidance platform.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled small">
+                        <li><a href="{{ url_for('home') }}" class="text-muted text-decoration-none">Home</a></li>
+                        <li><a href="{{ url_for('dashboard') }}" class="text-muted text-decoration-none">Dashboard</a></li>
+                        <li><a href="{{ url_for('resources') }}" class="text-muted text-decoration-none">Resources</a></li>
+                        <li><a href="{{ url_for('youtube_resources') }}" class="text-muted text-decoration-none">YouTube</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Connect</h5>
+                    <div class="social-links">
+                        <a href="#" class="text-white me-2"><i class="fab fa-github fa-lg"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-linkedin fa-lg"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube fa-lg"></i></a>
+                    </div>
+                    <p class="text-muted small mt-2">
+                        <i class="fas fa-envelope"></i> support@careerroadmap.ai
+                    </p>
+                </div>
+            </div>
+            <hr class="border-secondary">
+            <div class="text-center text-muted small">
+                &copy; 2026 CareerRoadmap AI | Made with <i class="fas fa-heart text-danger"></i> for your career
+            </div>
+        </div>
+    </footer>
+
+    <!-- ======== DARK MODE TOGGLE ======== -->
+    <button onclick="toggleTheme()" id="themeToggle" class="btn btn-outline-light position-fixed" 
+            style="bottom: 20px; right: 20px; border-radius: 50%; width: 50px; height: 50px; z-index: 9999; background: #667eea; border: none; box-shadow: 0 5px 20px rgba(102,126,234,0.4);">
+        🌙
+    </button>
+
+    <!-- ======== SCRIPTS ======== -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+    // Shared CSRF-aware fetch wrapper. Any page can call csrfFetch(url, options)
+    // instead of fetch(url, options) to automatically attach the token that
+    // Flask-WTF's CSRFProtect requires on POST/PUT/DELETE requests.
+    const CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    function csrfFetch(url, options = {}) {
+        options.headers = Object.assign({}, options.headers, {'X-CSRFToken': CSRF_TOKEN});
+        return fetch(url, options);
+    }
+
+    // Dark/Light Mode Toggle
+    function toggleTheme() {
+        const body = document.body;
+        const toggle = document.getElementById('themeToggle');
+        
+        if (body.classList.contains('dark-mode')) {
+            body.classList.remove('dark-mode');
+            toggle.textContent = '🌙';
+            localStorage.setItem('theme', 'light');
+        } else {
+            body.classList.add('dark-mode');
+            toggle.textContent = '☀️';
+            localStorage.setItem('theme', 'dark');
+        }
+    }
+    
+    // Load saved theme
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('themeToggle').textContent = '☀️';
+        }
+    });
+    
+    // Auto-dismiss alerts after 5 seconds
+    setTimeout(function() {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            setTimeout(() => {
+                alert.style.transition = 'opacity 0.5s';
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 500);
+            }, 5000);
+        });
+    }, 1000);
+    </script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

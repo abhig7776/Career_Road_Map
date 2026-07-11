@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}AI Chat - CareerRoadmap AI{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-robot fa-2x me-3"></i>
+                <div>
+                    <h5 class="mb-0">AI Career Assistant</h5>
+                    <small class="opacity-75">Your personal career guide - Ask me anything!</small>
+                </div>
+                <span class="badge bg-success ms-auto">● Online</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- Chat Messages -->
+            <div id="chatMessages" style="height: 400px; overflow-y: auto; padding: 15px; border: 1px solid #ddd; border-radius: 10px; margin-bottom: 15px;">
+                <div class="chat-message bot">
+                    <div class="message-content">
+                        👋 <strong>Hello! I'm your AI Career Assistant!</strong><br><br>
+                        I can help you with:
+                        <ul class="mb-0 mt-1">
+                            <li>📚 Career guidance and job roles</li>
+                            <li>🎓 Learning resources and courses</li>
+                            <li>💡 Skill recommendations</li>
+                            <li>🗺️ Roadmap planning</li>
+                            <li>📊 Progress tracking</li>
+                            <li>🎯 Interview preparation</li>
+                            <li>📝 Resume tips</li>
+                        </ul>
+                        <br>
+                        <strong>What would you like to know? 🤔</strong>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Questions -->
+            <div class="mb-3">
+                <div class="d-flex flex-wrap gap-2">
+                    <button class="btn btn-outline-primary btn-sm" onclick="askQuick('How to become a Data Scientist?')">
+                        📊 Data Scientist
+                    </button>
+                    <button class="btn btn-outline-success btn-sm" onclick="askQuick('How to become a Web Developer?')">
+                        🌐 Web Developer
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm" onclick="askQuick('How to become a Cybersecurity Analyst?')">
+                        🔒 Cybersecurity
+                    </button>
+                    <button class="btn btn-outline-warning btn-sm" onclick="askQuick('What skills should I learn?')">
+                        💡 Skills
+                    </button>
+                    <button class="btn btn-outline-info btn-sm" onclick="askQuick('Recommend me a course')">
+                        📚 Courses
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="askQuick('Help me with my career')">
+                        🚀 Career Help
+                    </button>
+                    <button class="btn btn-outline-dark btn-sm" onclick="askQuick('Interview tips')">
+                        🎯 Interview
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm" onclick="askQuick('Resume tips')">
+                        📝 Resume
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Input Area -->
+            <div class="d-flex gap-2">
+                <input type="text" id="userInput" class="form-control" 
+                       placeholder="Type your question here..." 
+                       autocomplete="off" required>
+                <button onclick="sendMessage()" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Send
+                </button>
+            </div>
+            <small class="text-muted mt-2 d-block">
+                <i class="fas fa-info-circle"></i> Try asking about careers, skills, courses, interviews, or resumes!
+            </small>
+        </div>
+    </div>
+</div>
+
+<script>
+const chatMessages = document.getElementById('chatMessages');
+const userInput = document.getElementById('userInput');
+
+function scrollToBottom() {
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function addMessage(message, isUser) {
+    const div = document.createElement('div');
+    div.className = `chat-message ${isUser ? 'user' : 'bot'}`;
+    div.innerHTML = message.replace(/\n/g, '<br>');
+    chatMessages.appendChild(div);
+    scrollToBottom();
+}
+
+function showTyping() {
+    const div = document.createElement('div');
+    div.className = 'chat-message bot';
+    div.id = 'typingIndicator';
+    div.innerHTML = '<span class="typing-indicator" style="display:block;">● ● ●</span>';
+    chatMessages.appendChild(div);
+    scrollToBottom();
+}
+
+function hideTyping() {
+    const typing = document.getElementById('typingIndicator');
+    if (typing) typing.remove();
+}
+
+async function sendMessage() {
+    const message = userInput.value.trim();
+    if (!message) return;
+    
+    userInput.value = '';
+    addMessage(message, true);
+    showTyping();
+    
+    try {
+        const response = await csrfFetch('/api/chat', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({message: message})
+        });
+        
+        const data = await response.json();
+        hideTyping();
+        
+        if (data.response) {
+            addMessage(data.response, false);
+        } else {
+            addMessage('Sorry, I encountered an error. Please try again.', false);
+        }
+    } catch (error) {
+        hideTyping();
+        addMessage('⚠️ Oops! Something went wrong. Please try again.', false);
+        console.error('Error:', error);
+    }
+}
+
+function askQuick(question) {
+    userInput.value = question;
+    sendMessage();
+}
+
+userInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') sendMessage();
+});
+
+// Focus input on load
+userInput.focus();
+</script>
+
+<style>
+.chat-message {
+    margin-bottom: 12px;
+    animation: fadeIn 0.3s ease;
+}
+
+.chat-message.user {
+    text-align: right;
+}
+
+.chat-message.user .message-content {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 18px 18px 0 18px;
+    max-width: 80%;
+}
+
+.chat-message.bot .message-content {
+    background: #f0f2f5;
+    color: #333;
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 18px 18px 18px 0;
+    max-width: 80%;
+}
+
+body.dark-mode .chat-message.bot .message-content {
+    background: #1a2a4a;
+    color: #ffffff;
+}
+
+.typing-indicator {
+    display: inline-block;
+    padding: 10px 16px;
+    background: #f0f2f5;
+    border-radius: 18px 18px 18px 0;
+}
+
+body.dark-mode .typing-indicator {
+    background: #1a2a4a;
+    color: #ffffff;
+}
+</style>
+{% endblock %}

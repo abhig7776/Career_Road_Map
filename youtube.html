@@ -1,0 +1,434 @@
+{% extends "base.html" %}
+
+{% block title %}YouTube Resources - CareerRoadmap AI{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2><i class="fab fa-youtube text-danger"></i> YouTube Learning Resources</h2>
+            <p class="text-muted">Best YouTube channels and playlists for career development</p>
+        </div>
+        <div>
+            <a href="{{ url_for('resources') }}" class="btn btn-primary">
+                <i class="fas fa-book"></i> All Resources
+            </a>
+        </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                        <input type="text" id="youtubeSearch" class="form-control" placeholder="Search YouTube videos...">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <select id="categoryFilter" class="form-control">
+                        <option value="all">All Categories</option>
+                        <option value="data-science">Data Science</option>
+                        <option value="web-dev">Web Development</option>
+                        <option value="cybersecurity">Cybersecurity</option>
+                        <option value="cloud">Cloud Computing</option>
+                        <option value="programming">Programming</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- YouTube Video Cards -->
+    <div class="row" id="youtubeGrid">
+        <!-- Video 1 -->
+        <div class="col-md-6 col-lg-4 mb-4 youtube-card" data-category="data-science">
+            <div class="card h-100 resource-card">
+                <div class="card-body">
+                    <div class="youtube-embed">
+                        <iframe src="https://www.youtube.com/embed/videoseries?list=PLBZBJbE_rGRVnpn8QyYoeF7nW2bKgrpC5" 
+                                allowfullscreen></iframe>
+                    </div>
+                    <h5 class="mt-3">Python for Data Science</h5>
+                    <p class="text-muted small">Complete Python tutorial for data science</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-danger"><i class="fab fa-youtube"></i> 50+ Videos</span>
+                        <span class="badge bg-info">Data Science</span>
+                        <a href="https://www.youtube.com/playlist?list=PLBZBJbE_rGRVnpn8QyYoeF7nW2bKgrpC5" 
+                           target="_blank" class="btn btn-danger btn-sm">
+                            <i class="fab fa-youtube"></i> Watch
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video 2 -->
+        <div class="col-md-6 col-lg-4 mb-4 youtube-card" data-category="web-dev">
+            <div class="card h-100 resource-card">
+                <div class="card-body">
+                    <div class="youtube-embed">
+                        <iframe src="https://www.youtube.com/embed/videoseries?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB" 
+                                allowfullscreen></iframe>
+                    </div>
+                    <h5 class="mt-3">Web Development Bootcamp</h5>
+                    <p class="text-muted small">Full stack web development course</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-danger"><i class="fab fa-youtube"></i> 100+ Videos</span>
+                        <span class="badge bg-info">Web Dev</span>
+                        <a href="https://www.youtube.com/playlist?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB" 
+                           target="_blank" class="btn btn-danger btn-sm">
+                            <i class="fab fa-youtube"></i> Watch
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video 3 -->
+        <div class="col-md-6 col-lg-4 mb-4 youtube-card" data-category="data-science">
+            <div class="card h-100 resource-card">
+                <div class="card-body">
+                    <div class="youtube-embed">
+                        <iframe src="https://www.youtube.com/embed/videoseries?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB" 
+                                allowfullscreen></iframe>
+                    </div>
+                    <h5 class="mt-3">Machine Learning Course</h5>
+                    <p class="text-muted small">Learn ML with Python</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-danger"><i class="fab fa-youtube"></i> 80+ Videos</span>
+                        <span class="badge bg-info">Data Science</span>
+                        <a href="https://www.youtube.com/playlist?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB" 
+                           target="_blank" class="btn btn-danger btn-sm">
+                            <i class="fab fa-youtube"></i> Watch
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video 4 -->
+        <div class="col-md-6 col-lg-4 mb-4 youtube-card" data-category="cybersecurity">
+            <div class="card h-100 resource-card">
+                <div class="card-body">
+                    <div class="youtube-embed">
+                        <iframe src="https://www.youtube.com/embed/videoseries?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB" 
+                                allowfullscreen></iframe>
+                    </div>
+                    <h5 class="mt-3">Cybersecurity Fundamentals</h5>
+                    <p class="text-muted small">Learn cybersecurity basics</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-danger"><i class="fab fa-youtube"></i> 60+ Videos</span>
+                        <span class="badge bg-info">Cybersecurity</span>
+                        <a href="https://www.youtube.com/playlist?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB" 
+                           target="_blank" class="btn btn-danger btn-sm">
+                            <i class="fab fa-youtube"></i> Watch
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video 5 -->
+        <div class="col-md-6 col-lg-4 mb-4 youtube-card" data-category="cloud">
+            <div class="card h-100 resource-card">
+                <div class="card-body">
+                    <div class="youtube-embed">
+                        <iframe src="https://www.youtube.com/embed/videoseries?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB" 
+                                allowfullscreen></iframe>
+                    </div>
+                    <h5 class="mt-3">Cloud Computing Course</h5>
+                    <p class="text-muted small">AWS, Azure, GCP tutorial</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-danger"><i class="fab fa-youtube"></i> 70+ Videos</span>
+                        <span class="badge bg-info">Cloud</span>
+                        <a href="https://www.youtube.com/playlist?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB" 
+                           target="_blank" class="btn btn-danger btn-sm">
+                            <i class="fab fa-youtube"></i> Watch
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video 6 -->
+        <div class="col-md-6 col-lg-4 mb-4 youtube-card" data-category="programming">
+            <div class="card h-100 resource-card">
+                <div class="card-body">
+                    <div class="youtube-embed">
+                        <iframe src="https://www.youtube.com/embed/videoseries?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB" 
+                                allowfullscreen></iframe>
+                    </div>
+                    <h5 class="mt-3">DevOps Bootcamp</h5>
+                    <p class="text-muted small">CI/CD, Docker, Kubernetes</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-danger"><i class="fab fa-youtube"></i> 90+ Videos</span>
+                        <span class="badge bg-info">Programming</span>
+                        <a href="https://www.youtube.com/playlist?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB" 
+                           target="_blank" class="btn btn-danger btn-sm">
+                            <i class="fab fa-youtube"></i> Watch
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video 7 -->
+        <div class="col-md-6 col-lg-4 mb-4 youtube-card" data-category="programming">
+            <div class="card h-100 resource-card">
+                <div class="card-body">
+                    <div class="youtube-embed">
+                        <iframe src="https://www.youtube.com/embed/videoseries?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB" 
+                                allowfullscreen></iframe>
+                    </div>
+                    <h5 class="mt-3">JavaScript Masterclass</h5>
+                    <p class="text-muted small">Complete JavaScript course</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-danger"><i class="fab fa-youtube"></i> 120+ Videos</span>
+                        <span class="badge bg-info">Programming</span>
+                        <a href="https://www.youtube.com/playlist?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB" 
+                           target="_blank" class="btn btn-danger btn-sm">
+                            <i class="fab fa-youtube"></i> Watch
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video 8 -->
+        <div class="col-md-6 col-lg-4 mb-4 youtube-card" data-category="data-science">
+            <div class="card h-100 resource-card">
+                <div class="card-body">
+                    <div class="youtube-embed">
+                        <iframe src="https://www.youtube.com/embed/videoseries?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB" 
+                                allowfullscreen></iframe>
+                    </div>
+                    <h5 class="mt-3">SQL for Data Science</h5>
+                    <p class="text-muted small">Learn SQL from scratch</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-danger"><i class="fab fa-youtube"></i> 40+ Videos</span>
+                        <span class="badge bg-info">Data Science</span>
+                        <a href="https://www.youtube.com/playlist?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB" 
+                           target="_blank" class="btn btn-danger btn-sm">
+                            <i class="fab fa-youtube"></i> Watch
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video 9 -->
+        <div class="col-md-6 col-lg-4 mb-4 youtube-card" data-category="web-dev">
+            <div class="card h-100 resource-card">
+                <div class="card-body">
+                    <div class="youtube-embed">
+                        <iframe src="https://www.youtube.com/embed/videoseries?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB" 
+                                allowfullscreen></iframe>
+                    </div>
+                    <h5 class="mt-3">React Complete Guide</h5>
+                    <p class="text-muted small">Learn React.js from scratch</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-danger"><i class="fab fa-youtube"></i> 90+ Videos</span>
+                        <span class="badge bg-info">Web Dev</span>
+                        <a href="https://www.youtube.com/playlist?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB" 
+                           target="_blank" class="btn btn-danger btn-sm">
+                            <i class="fab fa-youtube"></i> Watch
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video 10 -->
+        <div class="col-md-6 col-lg-4 mb-4 youtube-card" data-category="cybersecurity">
+            <div class="card h-100 resource-card">
+                <div class="card-body">
+                    <div class="youtube-embed">
+                        <iframe src="https://www.youtube.com/embed/videoseries?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB" 
+                                allowfullscreen></iframe>
+                    </div>
+                    <h5 class="mt-3">Ethical Hacking Course</h5>
+                    <p class="text-muted small">Learn ethical hacking from scratch</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-danger"><i class="fab fa-youtube"></i> 70+ Videos</span>
+                        <span class="badge bg-info">Cybersecurity</span>
+                        <a href="https://www.youtube.com/playlist?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB" 
+                           target="_blank" class="btn btn-danger btn-sm">
+                            <i class="fab fa-youtube"></i> Watch
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommended YouTube Channels -->
+    <div class="card mt-4">
+        <div class="card-header bg-danger text-white">
+            <h5><i class="fab fa-youtube"></i> Top YouTube Channels to Follow</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fab fa-youtube text-danger"></i> 
+                                <a href="https://www.youtube.com/c/Freecodecamp" target="_blank" class="text-decoration-none">freeCodeCamp</a>
+                            </div>
+                            <span class="badge bg-success">4.9 ★</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fab fa-youtube text-danger"></i> 
+                                <a href="https://www.youtube.com/c/Sentdex" target="_blank" class="text-decoration-none">Sentdex</a>
+                            </div>
+                            <span class="badge bg-success">4.8 ★</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fab fa-youtube text-danger"></i> 
+                                <a href="https://www.youtube.com/c/ProgrammingwithMosh" target="_blank" class="text-decoration-none">Programming with Mosh</a>
+                            </div>
+                            <span class="badge bg-success">4.7 ★</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fab fa-youtube text-danger"></i> 
+                                <a href="https://www.youtube.com/c/TechWithTim" target="_blank" class="text-decoration-none">Tech With Tim</a>
+                            </div>
+                            <span class="badge bg-success">4.8 ★</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fab fa-youtube text-danger"></i> 
+                                <a href="https://www.youtube.com/c/NetworkChuck" target="_blank" class="text-decoration-none">NetworkChuck</a>
+                            </div>
+                            <span class="badge bg-success">4.7 ★</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fab fa-youtube text-danger"></i> 
+                                <a href="https://www.youtube.com/c/Coreyms" target="_blank" class="text-decoration-none">Corey Schafer</a>
+                            </div>
+                            <span class="badge bg-success">4.9 ★</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fab fa-youtube text-danger"></i> 
+                                <a href="https://www.youtube.com/c/SimplilearnOfficial" target="_blank" class="text-decoration-none">Simplilearn</a>
+                            </div>
+                            <span class="badge bg-success">4.6 ★</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fab fa-youtube text-danger"></i> 
+                                <a href="https://www.youtube.com/c/EdurekaIN" target="_blank" class="text-decoration-none">Edureka</a>
+                            </div>
+                            <span class="badge bg-success">4.5 ★</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Tips -->
+    <div class="card mt-4">
+        <div class="card-header bg-warning">
+            <h5><i class="fas fa-lightbulb"></i> How to Make the Most of YouTube Learning</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3 text-center">
+                    <i class="fas fa-play-circle fa-2x text-danger"></i>
+                    <h6>Watch at 1.5x Speed</h6>
+                    <small class="text-muted">Save time while learning</small>
+                </div>
+                <div class="col-md-3 text-center">
+                    <i class="fas fa-code fa-2x text-primary"></i>
+                    <h6>Code Along</h6>
+                    <small class="text-muted">Practice while watching</small>
+                </div>
+                <div class="col-md-3 text-center">
+                    <i class="fas fa-bookmark fa-2x text-success"></i>
+                    <h6>Save Playlists</h6>
+                    <small class="text-muted">Create learning collections</small>
+                </div>
+                <div class="col-md-3 text-center">
+                    <i class="fas fa-users fa-2x text-info"></i>
+                    <h6>Join Community</h6>
+                    <small class="text-muted">Learn with others</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.resource-card {
+    transition: all 0.3s ease;
+}
+.resource-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+.youtube-embed {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 12px;
+}
+.youtube-embed iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+</style>
+
+<script>
+// Search and Filter functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('youtubeSearch');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const cards = document.querySelectorAll('.youtube-card');
+
+    function filterCards() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const category = categoryFilter.value;
+
+        cards.forEach(card => {
+            const title = card.querySelector('h5').textContent.toLowerCase();
+            const description = card.querySelector('p').textContent.toLowerCase();
+            const cardCategory = card.dataset.category;
+
+            let show = true;
+
+            // Search filter
+            if (searchTerm && !title.includes(searchTerm) && !description.includes(searchTerm)) {
+                show = false;
+            }
+
+            // Category filter
+            if (category !== 'all' && cardCategory !== category) {
+                show = false;
+            }
+
+            card.style.display = show ? '' : 'none';
+        });
+    }
+
+    searchInput.addEventListener('input', filterCards);
+    categoryFilter.addEventListener('change', filterCards);
+});
+</script>
+{% endblock %}

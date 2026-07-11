@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Admin - CareerRoadmap AI{% endblock %}
+{% block content %}
+<div class="fade-in">
+    <div class="card">
+        <div class="card-header bg-danger text-white"><h4><i class="fas fa-user-shield"></i> Admin Panel</h4></div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Verified</th><th>Admin</th><th>Joined</th></tr></thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ '✅' if user.is_verified else '❌' }}</td>
+                        <td>{{ '👑' if user.is_admin else '👤' }}</td>
+                        <td>{{ user.created_at.strftime('%Y-%m-%d') if user.created_at else 'N/A' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

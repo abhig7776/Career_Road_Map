@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block title %}Learning Resources - CareerRoadmap AI{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2><i class="fas fa-book-open text-primary"></i> Learning Resources</h2>
+            <p class="text-muted">Curated courses from top learning platforms to boost your career</p>
+        </div>
+        <div>
+            <a href="{{ url_for('recommendations') }}" class="btn btn-warning">
+                <i class="fas fa-robot"></i> Get Recommendations
+            </a>
+            <a href="{{ url_for('youtube_resources') }}" class="btn btn-danger">
+                <i class="fab fa-youtube"></i> YouTube
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="row mb-4">
+        <div class="col-md-3 col-6">
+            <div class="card text-center p-2">
+                <h4 class="text-primary">{{ resources|length }}</h4>
+                <small>Total Courses</small>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="card text-center p-2">
+                <h4 class="text-success">
+                    {% set free_count = 0 %}
+                    {% for r in resources %}
+                        {% if r.price == 'Free' %}
+                            {% set free_count = free_count + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    {{ free_count }}
+                </h4>
+                <small>Free Courses</small>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="card text-center p-2">
+                <h4 class="text-warning">
+                    {% set beginner_count = 0 %}
+                    {% for r in resources %}
+                        {% if r.difficulty == 'Beginner' %}
+                            {% set beginner_count = beginner_count + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    {{ beginner_count }}
+                </h4>
+                <small>Beginner</small>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="card text-center p-2">
+                <h4 class="text-danger">
+                    {% set ds_count = 0 %}
+                    {% for r in resources %}
+                        {% if r.category == 'Data Science' %}
+                            {% set ds_count = ds_count + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    {{ ds_count }}
+                </h4>
+                <small>Data Science</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resource Cards -->
+    <div class="row">
+        {% if resources %}
+            {% for resource in resources %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 resource-card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h5 class="card-title">{{ resource.title }}</h5>
+                                <span class="badge bg-{{ 'success' if resource.price == 'Free' else 'warning' }}">
+                                    {{ resource.price }}
+                                </span>
+                            </div>
+                            <p class="text-muted">
+                                <i class="fas fa-building"></i> {{ resource.platform }}
+                            </p>
+                            <p>
+                                <span class="badge bg-info">{{ resource.category }}</span>
+                                <span class="badge bg-secondary">{{ resource.difficulty }}</span>
+                            </p>
+                            <p>
+                                <i class="fas fa-star text-warning"></i> {{ resource.rating }}
+                                <span class="text-muted">/ 5.0</span>
+                            </p>
+                            <p class="small">
+                                <i class="fas fa-tags"></i> {{ resource.tags }}
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a href="{{ resource.url }}" target="_blank" class="btn btn-primary w-100">
+                                <i class="fas fa-external-link-alt"></i> Visit Course
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-book-open fa-4x text-muted mb-3"></i>
+                <h4>No Resources Available</h4>
+                <p class="text-muted">Click the button below to add sample resources</p>
+                {% if current_user.is_admin %}
+                    <a href="{{ url_for('add_resources') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Sample Resources
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Learning Platforms Section -->
+    <div class="card mt-4">
+        <div class="card-header bg-primary text-white">
+            <h5><i class="fas fa-globe"></i> Top Learning Platforms</h5>
+        </div>
+        <div class="card-body">
+            <div class="row text-center">
+                <div class="col-md-2 col-4 mb-2">
+                    <div class="p-2 border rounded">
+                        <i class="fab fa-coursera fa-2x text-primary"></i>
+                        <p class="mb-0 small">Coursera</p>
+                    </div>
+                </div>
+                <div class="col-md-2 col-4 mb-2">
+                    <div class="p-2 border rounded">
+                        <i class="fas fa-chalkboard-teacher fa-2x text-danger"></i>
+                        <p class="mb-0 small">Udemy</p>
+                    </div>
+                </div>
+                <div class="col-md-2 col-4 mb-2">
+                    <div class="p-2 border rounded">
+                        <i class="fab fa-youtube fa-2x text-danger"></i>
+                        <p class="mb-0 small">YouTube</p>
+                    </div>
+                </div>
+                <div class="col-md-2 col-4 mb-2">
+                    <div class="p-2 border rounded">
+                        <i class="fas fa-code fa-2x text-success"></i>
+                        <p class="mb-0 small">freeCodeCamp</p>
+                    </div>
+                </div>
+                <div class="col-md-2 col-4 mb-2">
+                    <div class="p-2 border rounded">
+                        <i class="fas fa-cloud fa-2x text-info"></i>
+                        <p class="mb-0 small">AWS Training</p>
+                    </div>
+                </div>
+                <div class="col-md-2 col-4 mb-2">
+                    <div class="p-2 border rounded">
+                        <i class="fas fa-shield-alt fa-2x text-warning"></i>
+                        <p class="mb-0 small">Cybrary</p>
+                    </div>
+                </div>
+                <div class="col-md-2 col-4 mb-2">
+                    <div class="p-2 border rounded">
+                        <i class="fas fa-google fa-2x text-primary"></i>
+                        <p class="mb-0 small">Google</p>
+                    </div>
+                </div>
+                <div class="col-md-2 col-4 mb-2">
+                    <div class="p-2 border rounded">
+                        <i class="fab fa-microsoft fa-2x text-info"></i>
+                        <p class="mb-0 small">Microsoft</p>
+                    </div>
+                </div>
+                <div class="col-md-2 col-4 mb-2">
+                    <div class="p-2 border rounded">
+                        <i class="fas fa-university fa-2x text-primary"></i>
+                        <p class="mb-0 small">edX</p>
+                    </div>
+                </div>
+                <div class="col-md-2 col-4 mb-2">
+                    <div class="p-2 border rounded">
+                        <i class="fas fa-code-branch fa-2x text-success"></i>
+                        <p class="mb-0 small">Kaggle</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Tips -->
+    <div class="card mt-4">
+        <div class="card-header bg-warning">
+            <h5><i class="fas fa-lightbulb"></i> How to Make the Most of These Resources</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3 text-center">
+                    <i class="fas fa-list-check fa-2x text-primary"></i>
+                    <h6>Plan Your Learning</h6>
+                    <small class="text-muted">Create a study schedule</small>
+                </div>
+                <div class="col-md-3 text-center">
+                    <i class="fas fa-code fa-2x text-success"></i>
+                    <h6>Practice Daily</h6>
+                    <small class="text-muted">Code along with tutorials</small>
+                </div>
+                <div class="col-md-3 text-center">
+                    <i class="fas fa-users fa-2x text-info"></i>
+                    <h6>Join Communities</h6>
+                    <small class="text-muted">Learn with others</small>
+                </div>
+                <div class="col-md-3 text-center">
+                    <i class="fas fa-robot fa-2x text-warning"></i>
+                    <h6>Track Progress</h6>
+                    <small class="text-muted">Use the AI Chat for guidance</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.resource-card {
+    transition: all 0.3s ease;
+}
+.resource-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+</style>
+{% endblock %}
