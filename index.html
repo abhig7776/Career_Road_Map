@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Home - CareerRoadmap AI{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+    <h1 class="display-4 fw-bold text-primary">
+        <i class="fas fa-robot"></i> AI-Powered Career Roadmap
+    </h1>
+    <p class="lead mt-3">
+        Get personalized career guidance based on your skills, interests, and goals.
+    </p>
+    
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-brain fa-3x text-primary"></i>
+                    <h5 class="card-title mt-3">AI-Powered Analysis</h5>
+                    <p>Our AI analyzes your profile and suggests the best career path.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-road fa-3x text-success"></i>
+                    <h5 class="card-title mt-3">Personalized Roadmap</h5>
+                    <p>Get step-by-step learning paths, courses, and projects tailored for you.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-line fa-3x text-warning"></i>
+                    <h5 class="card-title mt-3">Track Progress</h5>
+                    <p>Monitor your completed milestones and stay on track.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg mt-4 px-5">
+        <i class="fas fa-rocket"></i> Get Started Now
+    </a>
+</div>
+{% endblock %}

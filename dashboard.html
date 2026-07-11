@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - CareerRoadmap AI{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5><i class="fas fa-user-circle"></i> Your Profile</h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-3">
+                    <div class="display-1 text-primary">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h4>{{ username }}</h4>
+                </div>
+                <p><strong>Skills:</strong> {{ profile.skills if profile else 'Not added' }}</p>
+                <p><strong>Education:</strong> {{ profile.education if profile else 'Not added' }}</p>
+                <p><strong>Interests:</strong> {{ profile.interests if profile else 'Not added' }}</p>
+                <p><strong>Goal:</strong> {{ profile.career_goal if profile else 'Not added' }}</p>
+                <p><strong>Certifications:</strong> {{ profile.certifications if profile else 'Not added' }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <!-- Generate Roadmap -->
+        <div class="card">
+            <div class="card-header bg-warning">
+                <h5><i class="fas fa-robot"></i> Generate Your Personalized Roadmap</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('generate_roadmap') }}">
+                    <div class="mb-3">
+                        <label>Update Skills</label>
+                        <input type="text" name="skills" class="form-control" value="{{ profile.skills if profile else '' }}" required>
+                        <small class="text-muted">Separate with commas</small>
+                    </div>
+                    <div class="mb-3">
+                        <label>Update Education</label>
+                        <input type="text" name="education" class="form-control" value="{{ profile.education if profile else '' }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Update Interests</label>
+                        <input type="text" name="interests" class="form-control" value="{{ profile.interests if profile else '' }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Update Career Goal</label>
+                        <input type="text" name="career_goal" class="form-control" value="{{ profile.career_goal if profile else '' }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Update Certifications</label>
+                        <input type="text" name="certifications" class="form-control" value="{{ profile.certifications if profile else '' }}">
+                    </div>
+                    <button type="submit" class="btn btn-warning w-100">
+                        <i class="fas fa-magic"></i> Generate AI Roadmap
+                    </button>
+                </form>
+
+                {% if roadmap %}
+                    <hr>
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle"></i> Your roadmap is ready!
+                        <a href="{{ url_for('roadmap_view') }}" class="btn btn-success btn-sm float-end">
+                            <i class="fas fa-eye"></i> View Roadmap
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Learning Progress -->
+        <div class="card mt-3">
+            <div class="card-header bg-success text-white">
+                <h5><i class="fas fa-chart-line"></i> Your Learning Progress</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-4">
+                        <div class="stat-card">
+                            <div class="icon">📚</div>
+                            <div class="number" id="totalCourses">0</div>
+                            <div class="label">Total Courses</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="stat-card">
+                            <div class="icon">✅</div>
+                            <div class="number" id="completedCourses">0</div>
+                            <div class="label">Completed</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="stat-card">
+                            <div class="icon">🔄</div>
+                            <div class="number" id="inProgressCourses">0</div>
+                            <div class="label">In Progress</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <a href="{{ url_for('resources') }}" class="btn btn-success w-100">
+                        <i class="fas fa-book-open"></i> Browse Learning Resources
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Progress Stats -->
+        <div class="card mt-3">
+            <div class="card-header bg-secondary text-white">
+                <h5><i class="fas fa-chart-bar"></i> Your Progress</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-4">
+                        <div class="stat-card">
+                            <div class="icon">📚</div>
+                            <div class="number">0</div>
+                            <div class="label">Courses</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="stat-card">
+                            <div class="icon">🛠️</div>
+                            <div class="number">0</div>
+                            <div class="label">Projects</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="stat-card">
+                            <div class="icon">🎓</div>
+                            <div class="number">0</div>
+                            <div class="label">Certifications</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <label>Overall Progress</label>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 0%">0%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/dashboard_stats')
+        .then(response => response.json())
+        .then(data => {
+            if (data.total_courses !== undefined) {
+                document.getElementById('totalCourses').textContent = data.total_courses;
+                document.getElementById('completedCourses').textContent = data.completed_courses;
+                document.getElementById('inProgressCourses').textContent = data.in_progress_courses;
+            }
+        })
+        .catch(error => {
+            console.error('Error loading stats:', error);
+        });
+});
+</script>
+
+{% endblock %}
